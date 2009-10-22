@@ -4,17 +4,17 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name = "enttec-dmx-usb-pro-server"
+    gem.name = "enttec-dmx-usb-pro-tools"
     gem.summary = %Q{shell & server tools for the ENTTEC DMX USB PRO device}
     gem.description = %Q{ 
       The ENTTEC DMX USB PRO is a cost efficient device to control DMX from the
-      convinience of your USB port. This _enttec-dmx-usb-pro-server_ gem is a
+      convinience of your USB port. The __enttec-dmx-usb-pro-tools__ gem is a
       collection of tools to control the device from the command line. It also
       includes unix server script to hook up your dmx pro with a [GOM][1] (_not
       yet released_) server model.
     }.gsub /\n\n/, ''
     gem.email = "dirk.luesebrink@gmail.com"
-    gem.homepage = "http://github.com/crux/enttec-dmx-usb-pro-server"
+    gem.homepage = "http://github.com/crux/enttec-dmx-usb-pro-tools"
     gem.authors = ["dirk luesebrink"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
@@ -51,7 +51,7 @@ Rake::RDocTask.new do |rdoc|
   end
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "enttec-dmx-usb-pro-server #{version}"
+  rdoc.title = "enttec-dmx-usb-pro-tools #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end

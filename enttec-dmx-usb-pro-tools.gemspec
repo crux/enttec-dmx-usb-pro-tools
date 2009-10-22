@@ -4,7 +4,7 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{enttec-dmx-usb-pro-server}
+  s.name = %q{enttec-dmx-usb-pro-tools}
   s.version = "0.0.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.default_executable = %q{enttec-dmx-usb-pro}
   s.description = %q{ 
       The ENTTEC DMX USB PRO is a cost efficient device to control DMX from the
-      convinience of your USB port. This _enttec-dmx-usb-pro-server_ gem is a
+      convinience of your USB port. The __enttec-dmx-usb-pro-tools__ gem is a
       collection of tools to control the device from the command line. It also
       includes unix server script to hook up your dmx pro with a [GOM][1] (_not
       yet released_) server model.
@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
      "README.markdown",
      "Rakefile",
      "VERSION",
+     "bin/enttec-dmx-usb-pro",
      "doc/DMXUSBPro.pdf",
      "lib/enttec-dmx-usb-pro.rb",
      "lib/enttec-dmx-usb-pro/rdmx.rb",
@@ -38,7 +39,7 @@ Gem::Specification.new do |s|
      "spec/dmx_spec.rb",
      "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/crux/enttec-dmx-usb-pro-server}
+  s.homepage = %q{http://github.com/crux/enttec-dmx-usb-pro-tools}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.4}

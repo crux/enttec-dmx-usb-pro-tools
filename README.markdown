@@ -1,10 +1,10 @@
-# enttec-dmx-usb-pro-server
+# ENTTEX DMX USB PRO Tools
 
 The ENTTEC DMX USB PRO is a cost efficient device to control DMX from the
-convinience of your USB port. This _enttec-dmx-usb-pro-server_ gem is a
-collection of tools to control the ENTTECT device from the command line. It
-also includes unix server script to hook up your dmx pro with a [GOM][1] (_not
-yet released_) server model.
+convinience of your USB port. The __enttec-dmx-usb-pro-tools__ gem is a
+collection of tools to control the device from the command line. It also
+includes unix server script to hook up your dmx pro with a [GOM][1] (_not yet
+released_) server model.
 
 ## credits
 
