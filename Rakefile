@@ -5,8 +5,14 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "enttec-dmx-usb-pro-server"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{shell & server tools for the ENTTEC DMX USB PRO device}
+    gem.description = %Q{ 
+      The ENTTEC DMX USB PRO is a cost efficient device to control DMX from the
+      convinience of your USB port. This _enttec-dmx-usb-pro-server_ gem is a
+      collection of tools to control the device from the command line. It also
+      includes unix server script to hook up your dmx pro with a [GOM][1] (_not
+      yet released_) server model.
+    }.gsub /\n\n/, ''
     gem.email = "dirk.luesebrink@gmail.com"
     gem.homepage = "http://github.com/crux/enttec-dmx-usb-pro-server"
     gem.authors = ["dirk luesebrink"]
