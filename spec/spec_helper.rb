@@ -1,6 +1,6 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-require 'enttec-dmx-usb-pro'
+require 'enttec-dmx-usb-pro-tools'
 require 'spec'
 require 'spec/autorun'
 

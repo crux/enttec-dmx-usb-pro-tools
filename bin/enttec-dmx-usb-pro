@@ -1,6 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'rubygems'
-require 'enttec-dmx-usb-pro-tools'
-
-# vim: syntax=ruby

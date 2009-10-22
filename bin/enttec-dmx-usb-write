@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'enttec-dmx-usb-pro-tools'
+
+def main args
+  puts "args: #{args.inspect}"
+  #Enttec::Session.new .main ARGV
+
+  device_file = args.shift
+  device = Rdmx::Dmx.new device_file
+
+  values = args.map { |x| x.to_i }
+  device.write *values
+end
+
+(__FILE__ == $0) and (main ARGV)
+# vim: syntax=ruby
