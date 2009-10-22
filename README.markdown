@@ -1,16 +1,16 @@
-# enttec-dmx-usb-pro-server 
+# enttec-dmx-usb-pro-server
 
 The ENTTEC DMX USB PRO is a cost efficient device to control DMX from the
 convinience of your USB port. This _enttec-dmx-usb-pro-server_ gem is a
 collection of tools to control the ENTTECT device from the command line. It
-also includes unix server script to hook up your dmx pro with a GOM[1] (_not
+also includes unix server script to hook up your dmx pro with a [GOM][1] (_not
 yet released_) server model.
 
 ## credits
 
-The USB com code got lifted Ian Smith-Heisters rdmx[2] package which does
-includes much more DMX functionallity like animations and fixtures which i
-did't need.
+The USB com code got lifted from [Ian Smith-Heisters' Rdmx package][2] which
+does includes much more DMX functionallity like animations and fixtures which
+i did't need.
 
 [1]: http://github.com/crux/gom
 [2]: http://github.com/heisters/rdmx/blob/master/lib/dmx.rb
