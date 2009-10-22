@@ -8,6 +8,9 @@ Spec::Runner.configure do |config|
   config.before :each do
     @port = stub('SerialPort', :write => nil)
     SerialPort.stub!(:new).and_return(@port)
+
+    @gom = stub('Gom::Client', :write => nil)
+    (Gom::Client.stub! :new).and_return @gom
   end
 
   config.after :each do
