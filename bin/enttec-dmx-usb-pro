@@ -1,3 +1,6 @@
 #!/usr/bin/env ruby
 
-puts "foo"
+require 'rubygems'
+require 'enttec-dmx-usb-pro-tools'
+
+# vim: syntax=ruby

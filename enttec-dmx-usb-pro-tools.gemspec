@@ -33,9 +33,10 @@ Gem::Specification.new do |s|
      "VERSION",
      "bin/enttec-dmx-usb-pro",
      "doc/DMXUSBPro.pdf",
-     "lib/enttec-dmx-usb-pro.rb",
-     "lib/enttec-dmx-usb-pro/rdmx.rb",
-     "lib/enttec-dmx-usb-pro/server.rb",
+     "enttec-dmx-usb-pro-tools.gemspec",
+     "lib/enttec-dmx-usb-pro-tools.rb",
+     "lib/enttec-dmx-usb-pro-tools/rdmx.rb",
+     "lib/enttec-dmx-usb-pro-tools/server.rb",
      "spec/dmx_spec.rb",
      "spec/spec_helper.rb"
   ]
