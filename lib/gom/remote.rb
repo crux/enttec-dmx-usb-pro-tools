@@ -1,0 +1,1 @@
+require 'gom/remote/connection'
