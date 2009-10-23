@@ -6,7 +6,7 @@ describe Enttec::GomSession do
 
   describe "initialization" do
     it "should initialize with GOM node URL" do
-      Gom::Client.should_receive(:new).with('http://localhost:345')
+      Gom::Remote::Connection.should_receive(:new).with('http://localhost:345')
       Enttec::GomSession.new('http://localhost:345/dmx/node/')
 
     end

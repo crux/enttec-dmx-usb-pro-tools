@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'enttec-dmx-usb-pro-tools'
+
+def main args
+  gom_dmx_node_url = args.shift
+  #daemon = (Enttec::Daemon.new gom_dmx_node_url)
+
+  grcs = Gom::Remote::CallbackServer.new
+  grcs.start
+  sleep 2
+  grcs.stop
+end
+
+(__FILE__ == $0) and (main ARGV)
+# vim: syntax=ruby
