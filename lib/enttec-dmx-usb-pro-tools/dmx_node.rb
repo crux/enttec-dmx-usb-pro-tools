@@ -1,3 +1,5 @@
+require 'nokogiri'
+
 module Enttec
 
   # needs:
@@ -26,8 +28,6 @@ module Enttec
       @url = url
       @options = (Defaults.merge options)
       @gom, @path = (Gom::Remote::Connection.init url)
-
-      @values = (Array.new 256, 0)
     end
 
     def device_file
@@ -35,14 +35,30 @@ module Enttec
     end
 
     def values
-      require 'nokogiri'
+      data = (Array.new 512, 0)
+
       xml = (@gom.read "#{@path}/values.xml")
       (Nokogiri::parse xml).xpath("//attribute").each do |a|
-        chan = Integer(a.attributes['name'].to_s)
-        @values[chan] = Integer(a.text)
+        begin
+          chan = Integer(a.attributes['name'].to_s)
+          val = Integer(a.text)
+          validate_dmx_range chan, val
+          data[chan-1] = val
+        rescue => e
+          puts e
+        end
       end
 
-      @values
+      data
+    end
+
+    def validate_dmx_range chan, value
+      if(chan < 1 or 512 <= chan)
+        raise " ## warning: DMX channel out of range: #{chan}"
+      end
+      if(value < 0 or 256 <= value) 
+        raise " ## warning: DMX value out of range: #{value}"
+      end
     end
 
     def on_values &callback
