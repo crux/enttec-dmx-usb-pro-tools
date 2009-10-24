@@ -11,7 +11,7 @@ module Enttec
     #
     def initialize dmx_node_url, options = {}
       @options = (Defaults.merge options)
-      @session = GomSession.new dmx_node_url
+      @dmx = DmxNode.new dmx_node_url, @options
     end
 
     def run
@@ -30,6 +30,7 @@ module Enttec
 
     def tic
       puts " -- tic"
+      puts @dmx.values.inspect
     rescue => e
       puts " ## #{e}"
     end
