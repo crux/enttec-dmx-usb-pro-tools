@@ -37,7 +37,7 @@ describe Enttec::GomSession do
           with('/dmx/node/values.xml').
           and_return(<<-XML)
 <?xml version="1.0"?>
-<node ctime="2009-10-22T17:14:31+02:00" uri="/services/DMX/enttec-dmx-usb-pro/values" name="values" mtime="2009-10-22T17:14:31+02:00">
+<node ctime="2009-10-22T17:14:31+02:00" uri="/dmx/node/values" name="values" mtime="2009-10-22T17:14:31+02:00">
   <attribute type="string" name="1" mtime="2009-10-22T17:14:31+02:00">1</attribute>
   <attribute type="string" name="17" mtime="2009-10-22T17:14:31+02:00">23</attribute>
   <attribute type="string" name="245" mtime="2009-10-22T17:14:31+02:00">177</attribute>

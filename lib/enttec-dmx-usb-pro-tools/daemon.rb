@@ -1,7 +1,11 @@
 module Enttec
   class Daemon
 
-    Defaults = { }
+    include ::Timeout
+
+    Defaults = { 
+      :refresh_interval_dt => 3
+    }
 
     # dmx_node_url: http://<gom server>/<dmx node path>
     #
@@ -11,10 +15,24 @@ module Enttec
     end
 
     def run
+      puts " -- running gom enttec daemon loop..."
+      #grcs = Gom::Remote::CallbackServer.new
+      #grcs.start
+      loop do
+        tic
+        sleep @options[:refresh_interval_dt]
+      end
+    ensure
+      #grcs.stop
     end
 
     private
 
+    def tic
+      puts " -- tic"
+    rescue => e
+      puts " ## #{e}"
+    end
   end
 end
 

@@ -6,12 +6,14 @@ require 'enttec-dmx-usb-pro-tools'
 
 def main args
   gom_dmx_node_url = args.shift
-  #daemon = (Enttec::Daemon.new gom_dmx_node_url)
-
-  grcs = Gom::Remote::CallbackServer.new
-  grcs.start
-  sleep 2
-  grcs.stop
+  daemon = (Enttec::Daemon.new gom_dmx_node_url)
+  daemon.run
+  #grcs = Gom::Remote::CallbackServer.new
+  #grcs.start
+  #sleep 2
+  #grcs.stop
+rescue => e
+  puts " ## #{e}\n -> #{e.backtrace.join "\n    "}"
 end
 
 (__FILE__ == $0) and (main ARGV)
