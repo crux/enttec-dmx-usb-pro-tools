@@ -8,8 +8,18 @@ module Gom
     class Connection
       attr_reader :base_url
 
-      def initialize url
-        @base_url = url
+      # take apart the URL into GOM and node path part
+      def self.init url
+        u = URI.parse url
+        re = %r|#{u.scheme}://#{u.host}(:#{u.port})?|
+        gom_url = (re.match url).to_s
+        path = (url.sub gom_url, '')
+
+        [(self.new url), path]
+      end
+
+      def initialize base_url
+        @base_url = base_url
         Gom::Remote.connection = self
 
         @subscriptions = {}

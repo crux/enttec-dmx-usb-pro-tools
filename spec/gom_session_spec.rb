@@ -1,4 +1,5 @@
 require File.dirname(__FILE__)+'/spec_helper'
+__END__
 
 describe Enttec::GomSession do
 
@@ -20,7 +21,7 @@ describe Enttec::GomSession do
 
     #describe "config" do
       it "should fetch the node uri from the URL" do
-        @session.node_uri.should == '/dmx/node'
+        @session.initial_uri.should == '/dmx/node'
       end
 
       it "should load the device_file name" do

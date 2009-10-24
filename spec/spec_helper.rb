@@ -9,8 +9,8 @@ Spec::Runner.configure do |config|
     @port = stub('SerialPort', :write => nil)
     SerialPort.stub!(:new).and_return(@port)
 
-    @gom = stub('Gom::Remote::Connection', :write => nil)
-    (Gom::Remote::Connection.stub! :new).and_return @gom
+    #@gom = stub('Gom::Remote::Connection', :write => nil)
+    #(Gom::Remote::Connection.stub! :new).and_return @gom
   end
 
   config.after :each do

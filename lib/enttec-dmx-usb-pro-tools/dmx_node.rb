@@ -14,36 +14,35 @@ module Enttec
   #             ...
   #              +-- :27
   # 
-  class GomSession
+  class DmxNode
 
     Defaults = { }
 
-    attr_reader :initial_uri, :connection
+    attr_reader :url, :path, :gom
 
     # dmx_node_url: http://<gom server>/<dmx node path>
     #
-    def initialize dmx_node_url, options = {}
+    def initialize url, options = {}
+      @url = url
       @options = (Defaults.merge options)
-
-      server_url, @initial_uri = (GomSession::split_url dmx_node_url)
-      @connection = Gom::Remote::Connection.new server_url
+      @gom, @path = (Gom::Remote::Connection.init url)
 
       @values = (Array.new 256, 0)
     end
 
+    def device_file
+      @device_file ||= (@gom.read "#{@path}:device_file.txt")
+    end
+
     def values
       require 'nokogiri'
-      xml = (@connection.read "#{@initial_uri}/values.xml")
+      xml = (@gom.read "#{@path}/values.xml")
       (Nokogiri::parse xml).xpath("//attribute").each do |a|
         chan = Integer(a.attributes['name'].to_s)
         @values[chan] = Integer(a.text)
       end
 
       @values
-    end
-
-    def device_file
-      @device_file ||= (@connection.read "#{@initial_uri}:device_file.txt")
     end
 
     def on_values &callback

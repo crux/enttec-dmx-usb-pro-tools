@@ -19,8 +19,6 @@ module Gom
         # URI for the observer node 
         @uri = "/gom/observer#{@entry_uri.sub ':', '/'}"
       end
-
-      def 
     end
   end
 end
