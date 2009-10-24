@@ -22,15 +22,13 @@ describe Gom::Remote::Subscription do
       @sub.name.should == "0x#{@sub.object_id}"
     end
     it "should have operations whitelist" do
-      @sub.options[:operations].should == [:update]
+      @sub.operations.should == "update"
     end
     it "should have nil condition_script" do
-      @sub.options.has_key?(:condition_script).should == true
-      @sub.options[:condition_script].should == nil
+      @sub.condition_script.should == nil
     end
     it "should have a nil uri_regexp" do
-      @sub.options.has_key?(:uri_regexp).should == true
-      @sub.options[:uri_regexp].should == nil
+      @sub.uri_regexp.should == nil
     end
   end
 

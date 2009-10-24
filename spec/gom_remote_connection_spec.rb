@@ -25,8 +25,8 @@ describe Gom::Remote::Connection do
       @gom.subscriptions.push s
       @gom.should_receive(:http_put).with(
         "http://localhost:3000/gom/observer/node/values/.#{s.name}", { 
-        :callback_url => "http://1.2.3.4/gnp?#{s.name}:/node/values", 
-        :accept => 'application/json'
+        "attributes[callback_url]" => "http://1.2.3.4/gnp?#{s.name}:/node/values", 
+        "attributes[accept]" => 'application/json'
       })
       @gom.refresh_subscriptions
     end
@@ -35,8 +35,8 @@ describe Gom::Remote::Connection do
       s = (Gom::Remote::Subscription.new '/node:attribute')
       @gom.should_receive(:http_put).with(
         "http://localhost:3000/gom/observer/node/attribute/.#{s.name}", { 
-        :callback_url => "http://1.2.3.4/gnp?#{s.name}:/node:attribute", 
-        :accept => 'application/json'
+        "attributes[callback_url]" => "http://1.2.3.4/gnp?#{s.name}:/node:attribute", 
+        "attributes[accept]" => 'application/json'
       })
       @gom.refresh s
     end

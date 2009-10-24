@@ -42,6 +42,11 @@ module Gom
           "attributes[callback_url]" => callback_url,
           "attributes[accept]"       => 'application/json',
         }
+
+        #  "attributes[operations]"   => (subscription.options['operations'].join ', '),
+        #  "attributes[uri_regexp]"   => subscription.options['uri_regexp'],
+        #  "attributes[condition_script]"=> subscription.options['condition_script'],
+        #}
         http_put(url, params) # {|req| req.content_type = 'application/json'}
       end
 
