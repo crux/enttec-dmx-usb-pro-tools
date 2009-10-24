@@ -15,7 +15,7 @@ module Gom
         gom_url = (re.match url).to_s
         path = (url.sub gom_url, '')
 
-        [(self.new url), path]
+        [(self.new gom_url), path]
       end
 
       def initialize base_url
@@ -48,13 +48,11 @@ module Gom
 =end
       end
 
-      private
-
       def callback_ip
         return @callback_ip unless @callback_ip.nil?
         txt = (read "/gom/config/connection.txt")
         unless m = (txt.match /^client_ip:\s*(\d+\.\d+\.\d+\.\d)/) 
-          raise "/gom/config/connection: No Client IP -- #{txt}"
+          raise "/gom/config/connection: No Client IP? '#{txt}'"
         end
         @callback_ip = m[1]
       end
