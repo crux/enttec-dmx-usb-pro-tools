@@ -8,7 +8,7 @@ module Gom
         :uri_regexp       => nil,
       }
 
-      attr_reader :name, :entry_uri, :uri
+      attr_reader :name, :entry_uri, :options, :uri
 
       def initialize name, entry_uri, handler = nil, options = {}, &blk
         @options = Defaults.merge options
