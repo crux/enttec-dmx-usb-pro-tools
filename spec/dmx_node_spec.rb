@@ -25,18 +25,19 @@ describe Enttec::DmxNode do
       @dmx.device_file.should == '/dev/cu.usbserial-ENRV27QZ'
     end
 
-    it "should reject invalid and out of range dmx values and channels" do
-      @gom.
-        should_receive(:read).
-        with('/dmx/node/values.xml').
-        and_return(<<-XML)
+    it "should have 512 entries in the values array" do
+      @gom.should_receive(:read).with('/dmx/node/values.xml').and_return(<<-XML)
 <?xml version="1.0"?>
 <node ctime="2009-10-22T17:14:31+02:00" uri="/dmx/node/values" name="values" mtime="2009-10-22T17:14:31+02:00">
-<attribute type="string" name="600" mtime="2009-10-22T17:14:31+02:00">1</attribute>
-<attribute type="string" name="0" mtime="2009-10-22T17:14:31+02:00">23</attribute>
-<attribute type="string" name="1" mtime="2009-10-22T17:14:31+02:00">-10</attribute>
-<attribute type="string" name="2" mtime="2009-10-22T17:14:31+02:00">300</attribute>
-<attribute type="string" name="3" mtime="2009-10-22T17:14:31+02:00">54321</attribute>
+</node>
+        XML
+      @dmx.values.size.should == 512
+    end
+
+    it "should reject non integer DMX values" do
+      @gom.should_receive(:read).with('/dmx/node/values.xml').and_return(<<-XML)
+<?xml version="1.0"?>
+<node ctime="2009-10-22T17:14:31+02:00" uri="/dmx/node/values" name="values" mtime="2009-10-22T17:14:31+02:00">
 <attribute type="string" name="4" mtime="2009-10-22T17:14:31+02:00">abc</attribute>
 </node>
         XML
@@ -44,11 +45,33 @@ describe Enttec::DmxNode do
       @dmx.values.should == a
     end
 
+    it "should reject out of range DMX values" do
+      @gom.should_receive(:read).with('/dmx/node/values.xml').and_return(<<-XML)
+<?xml version="1.0"?>
+<node ctime="2009-10-22T17:14:31+02:00" uri="/dmx/node/values" name="values" mtime="2009-10-22T17:14:31+02:00">
+<attribute type="string" name="2" mtime="2009-10-22T17:14:31+02:00">300</attribute>
+<attribute type="string" name="3" mtime="2009-10-22T17:14:31+02:00">54321</attribute>
+</node>
+        XML
+      a = (Array.new 512, 0)
+      @dmx.values.should == a
+    end
+
+    it "should reject out or range DMX channels" do
+      @gom.should_receive(:read).with('/dmx/node/values.xml').and_return(<<-XML)
+<?xml version="1.0"?>
+<node ctime="2009-10-22T17:14:31+02:00" uri="/dmx/node/values" name="values" mtime="2009-10-22T17:14:31+02:00">
+<attribute type="string" name="600" mtime="2009-10-22T17:14:31+02:00">1</attribute>
+<attribute type="string" name="0" mtime="2009-10-22T17:14:31+02:00">23</attribute>
+<attribute type="string" name="1" mtime="2009-10-22T17:14:31+02:00">-10</attribute>
+</node>
+        XML
+      a = (Array.new 512, 0)
+      @dmx.values.should == a
+    end
+
     it "should parse values from gom node" do
-      @gom.
-        should_receive(:read).
-        with('/dmx/node/values.xml').
-        and_return(<<-XML)
+      @gom.should_receive(:read).with('/dmx/node/values.xml').and_return(<<-XML)
 <?xml version="1.0"?>
 <node ctime="2009-10-22T17:14:31+02:00" uri="/dmx/node/values" name="values" mtime="2009-10-22T17:14:31+02:00">
 <attribute type="string" name="1" mtime="2009-10-22T17:14:31+02:00">1</attribute>
