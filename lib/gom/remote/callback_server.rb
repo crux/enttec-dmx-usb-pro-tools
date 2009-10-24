@@ -11,6 +11,10 @@ module Gom
         @rack_script = Proc.new { |env| (dispatch env) }
       end
 
+      def running?
+        !@server.nil?
+      end
+
       def start
         @server.nil? or (raise "already running!")
         @thread = Thread.new do
@@ -24,6 +28,7 @@ module Gom
             puts " ## oops: #{e}"
           end
         end
+        self
       end
 
       def stop
@@ -37,13 +42,14 @@ module Gom
         @thread.kill
         @thread = nil
         puts '    and gone.'
+        self
       end
 
       private
 
-      def  env
+      def dispatch env
         puts("-" * 80)
-        puts env
+        puts env.inspect
         puts("-" * 80)
         req = Rack::Request.new(env)
         params = req.params
