@@ -10,30 +10,34 @@ describe Gom::Remote::Connection do
     end
   end
 
-  describe "subscriptions" do 
+  describe "with subscriptions" do 
     before :each do
       @gom, path = (Gom::Remote::Connection.init 'http://localhost:3000')
+      @gom.stub!(:callback_ip).and_return("1.2.3.4");
+    end
+
+    it "should have no subscriptions on init" do
+      @gom.subscriptions.should == []
     end
 
     it "should put observer to gom on refresh" do
+      s = (Gom::Remote::Subscription.new '/node/values')
+      @gom.subscriptions.push s
       @gom.should_receive(:http_put).with(
         'http://localhost:3000/gom/observer/node/values', { 
-        :callback_url => "http://#{@gom.callback_ip}/gnp?/node/values", 
+        :callback_url => "http://1.2.3.4/gnp?#{s.name}:/node/values", 
         :accept => 'application/json'
       })
-
-      s = (Gom::Remote::Subscription.new 'x', '/node/values')
-      @gom.refresh s
+      @gom.refresh_subscriptions
     end
 
     it "should observe an attribute entry" do
+      s = (Gom::Remote::Subscription.new '/node:attribute')
       @gom.should_receive(:http_put).with(
         'http://localhost:3000/gom/observer/node/attribute', { 
-        :callback_url => "http://#{@gom.callback_ip}/gnp?/node:attribute", 
+        :callback_url => "http://1.2.3.4/gnp?#{s.name}:/node:attribute", 
         :accept => 'application/json'
       })
-
-      s = (Gom::Remote::Subscription.new 'x', '/node:attribute')
       @gom.refresh s
     end
   end

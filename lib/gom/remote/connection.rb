@@ -6,7 +6,8 @@ module Gom
     class << self; attr_accessor :connection; end
 
     class Connection
-      attr_reader :base_url
+
+      attr_reader :base_url, :subscriptions
 
       # take apart the URL into GOM and node path part
       def self.init url
@@ -22,18 +23,20 @@ module Gom
         @base_url = base_url
         Gom::Remote.connection = self
 
-        @subscriptions = {}
+        @subscriptions = []
       end
 
       def read path
         open("#{@base_url}#{path}").read
       end
 
-      def refresh subscription 
-        @subscriptions[subscription.entry_uri] = subscription
+      def refresh_subscriptions
+        @subscriptions.each { |sub| refresh sub }
+      end
 
+      def refresh subscription
         url = "#{@base_url}#{subscription.uri}"
-        callback_url = "http://#{callback_ip}/gnp?#{subscription.entry_uri}"
+        callback_url = "http://#{callback_ip}/gnp?#{subscription.name}:#{subscription.entry_uri}"
         params = {
           :callback_url => callback_url,
           :accept       => 'application/json'

@@ -4,7 +4,7 @@ module Enttec
     include ::Timeout
 
     Defaults = { 
-      :refresh_interval_dt => 3
+      :refresh_interval_dt => 10
     }
 
     # dmx_node_url: http://<gom server>/<dmx node path>
@@ -16,23 +16,29 @@ module Enttec
 
     def run
       puts " -- running gom enttec daemon loop..."
-      #grcs = Gom::Remote::CallbackServer.new
-      #grcs.start
+      grcs = Gom::Remote::CallbackServer.new
+      grcs.start
       loop do
-        tic
+        begin
+          tic
+        rescue => e
+          puts " ## #{e}"
+        end
         sleep @options[:refresh_interval_dt]
       end
     ensure
-      #grcs.stop
+      grcs.stop
     end
 
     private
 
     def tic
-      puts " -- tic"
-      puts @dmx.values.inspect
-    rescue => e
-      puts " ## #{e}"
+      puts " -- tic --"
+      values = {}
+      @dmx.values.each_with_index do |val, i|
+        (0 < val) and (values[i+1] = val)
+      end
+      puts values.inspect
     end
   end
 end
