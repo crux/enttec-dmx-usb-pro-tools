@@ -20,4 +20,15 @@ describe Gom::Remote::Subscription do
       s.options[:uri_regexp].should == nil
     end
   end
+
+  describe "observer uri" do
+    it "should construct a proper gom observer uri" do
+      s = (Gom::Remote::Subscription.new 'foo', '/dmx/node/values')
+      s.uri.should == '/gom/observer/dmx/node/values'
+    end
+    it "should interpret attribute paths" do
+      s = (Gom::Remote::Subscription.new 'foo', '/dmx/node:attribute')
+      s.uri.should == '/gom/observer/dmx/node/attribute'
+    end
+  end
 end

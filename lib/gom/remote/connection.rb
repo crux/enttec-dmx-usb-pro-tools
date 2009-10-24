@@ -32,20 +32,13 @@ module Gom
       def refresh subscription 
         @subscriptions[subscription.entry_uri] = subscription
 
-=begin
-        OBSERVED_NODE = '/some/node'
-        CALLBACK_URL  = 'http://my.server.com:1234/'
-
-        url = URI.parse "#{@base_url}/gom/observer#{subscription.uri}"
-        req = Net::HTTP::Put.new url.path
-        req.set_form_data(
-          'callback_url' => CALLBACK_URL, 'accept' => 'application/json', 
-        )
-
-        Net::HTTP.new(url.host, url.port).start do |http|   
-            http.request(req)
-        end
-=end
+        url = "#{@base_url}#{subscription.uri}"
+        callback_url = "http://#{callback_ip}/gnp?#{subscription.entry_uri}"
+        params = {
+          :callback_url => callback_url,
+          :accept       => 'application/json'
+        }
+        http_put(url, params) # {|req| req.content_type = 'application/json'}
       end
 
       def callback_ip
@@ -56,53 +49,24 @@ module Gom
         end
         @callback_ip = m[1]
       end
-    end
-  end
-end
 
-__END__
-        @uri = "/gom/observer#{@entry_uri.sub ':', '/'}"
-      end
+      private
 
-      def refresh
+      def http_put(url, params, &request_modifier)
+        uri = URI.parse url
+        req = Net::HTTP::Put.new uri.path
+        req.set_form_data(params)
+        request_modifier && (request_modifier.call req)
 
-        OBSERVED_NODE = '/some/node'
-        CALLBACK_URL  = 'http://my.server.com:1234/'
-
-        url = URI.parse "http://gom.service/gom/observer#{OBSERVED_NODE}"
-        req = Net::HTTP::Put.new @uri
-        req.set_form_data(
-          'callback_url' => CALLBACK_URL, 'accept' => 'application/json', 
-        )
-
-        :operations       => [:update],
-        :condition_script => nil, 
-        :uri_regexp       => nil,
-        )
-
-        Net::HTTP.new(url.host, url.port).start do |http|   
-            http.request(req)
-        end
-
-
-
-
-
-        req = Net::HTTP::Post.new @uri
-        req.content_type = 'application/json'
-        s = (RestFs::Serializer.from_mime_type req.content_type)
-        req.body = s.encode(entry, :container => {
-          :name => op, :attributes => {"uri"=> entry.uri }
-        })
-
-
-
-        session = (Net::HTTP.new callback.host, callback.port)
+        session = (Net::HTTP.new uri.host, uri.port)
         case res = session.start { |http| http.request req }
         when Net::HTTPSuccess, Net::HTTPRedirection
           # OK
         else
-          #Log.error "failed notification: #{res}"
           res.error!
         end
       end
+
+    end
+  end
+end
