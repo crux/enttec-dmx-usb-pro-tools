@@ -17,6 +17,8 @@ module Enttec
   #              +-- :27
   # 
   class DmxNode
+    
+    include Gom::Remote
 
     Defaults = { }
 
@@ -28,6 +30,9 @@ module Enttec
       @url = url
       @options = (Defaults.merge options)
       @gom, @path = (Gom::Remote::Connection.init url)
+
+      @values_sub = (Subscription.new "#{@path}/values", :name => "enttec-dmx")
+      @gom.subscriptions.push @values_sub
     end
 
     def device_file

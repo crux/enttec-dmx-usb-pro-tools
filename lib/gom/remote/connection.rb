@@ -31,6 +31,7 @@ module Gom
       end
 
       def refresh_subscriptions
+        puts " -- refresh observers(#{@subscriptions.size})"
         @subscriptions.each { |sub| refresh sub }
       end
 
@@ -38,8 +39,8 @@ module Gom
         url = "#{@base_url}#{subscription.uri}"
         callback_url = "http://#{callback_ip}/gnp?#{subscription.name}:#{subscription.entry_uri}"
         params = {
-          :callback_url => callback_url,
-          :accept       => 'application/json'
+          "attributes[callback_url]" => callback_url,
+          "attributes[accept]"       => 'application/json',
         }
         http_put(url, params) # {|req| req.content_type = 'application/json'}
       end

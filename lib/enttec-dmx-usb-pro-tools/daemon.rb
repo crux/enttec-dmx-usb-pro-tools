@@ -16,29 +16,30 @@ module Enttec
 
     def run
       puts " -- running gom enttec daemon loop..."
-      grcs = Gom::Remote::CallbackServer.new
-      grcs.start
+      #grcs = Gom::Remote::CallbackServer.new
+      #grcs.start
       loop do
         begin
           tic
-        rescue => e
+        rescue Exception => e
           puts " ## #{e}"
         end
         sleep @options[:refresh_interval_dt]
       end
     ensure
-      grcs.stop
+      #grcs.stop
     end
 
     private
 
     def tic
       puts " -- tic --"
-      values = {}
-      @dmx.values.each_with_index do |val, i|
-        (0 < val) and (values[i+1] = val)
-      end
-      puts values.inspect
+      @dmx.gom.refresh_subscriptions
+      #values = {}
+      #@dmx.values.each_with_index do |val, i|
+      #  (0 < val) and (values[i+1] = val)
+      #end
+      #puts values.inspect
     end
   end
 end

@@ -24,7 +24,7 @@ describe Gom::Remote::Connection do
       s = (Gom::Remote::Subscription.new '/node/values')
       @gom.subscriptions.push s
       @gom.should_receive(:http_put).with(
-        'http://localhost:3000/gom/observer/node/values', { 
+        "http://localhost:3000/gom/observer/node/values/.#{s.name}", { 
         :callback_url => "http://1.2.3.4/gnp?#{s.name}:/node/values", 
         :accept => 'application/json'
       })
@@ -34,7 +34,7 @@ describe Gom::Remote::Connection do
     it "should observe an attribute entry" do
       s = (Gom::Remote::Subscription.new '/node:attribute')
       @gom.should_receive(:http_put).with(
-        'http://localhost:3000/gom/observer/node/attribute', { 
+        "http://localhost:3000/gom/observer/node/attribute/.#{s.name}", { 
         :callback_url => "http://1.2.3.4/gnp?#{s.name}:/node:attribute", 
         :accept => 'application/json'
       })
