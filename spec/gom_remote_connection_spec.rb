@@ -20,24 +20,52 @@ describe Gom::Remote::Connection do
       @gom.subscriptions.should == []
     end
 
+    it "should have an operations whitelist" do
+      s = (Gom::Remote::Subscription.new '/node', :operations => [:delete, :create])
+      @gom.subscriptions.push s
+      @gom.should_receive(:http_put).with(
+        "http://localhost:3000/gom/observer/node/.#{s.name}", 
+        hash_including("attributes[operations]" => 'delete, create')
+      )
+      @gom.refresh_subscriptions
+    end
+
+    it "should have an uri regexp" do
+      s = (Gom::Remote::Subscription.new '/node', :uri_regexp => /foo/)
+      @gom.subscriptions.push s
+      @gom.should_receive(:http_put).with(
+        "http://localhost:3000/gom/observer/node/.#{s.name}", 
+        hash_including("attributes[uri_regexp]" => /foo/)
+      )
+      @gom.refresh_subscriptions
+    end
+
+    it "should have accept=application/json param" do
+      s = (Gom::Remote::Subscription.new '/node')
+      @gom.subscriptions.push s
+      @gom.should_receive(:http_put).with(
+        "http://localhost:3000/gom/observer/node/.#{s.name}", 
+        hash_including("attributes[accept]" => 'application/json')
+      )
+      @gom.refresh_subscriptions
+    end
+
     it "should put observer to gom on refresh" do
       s = (Gom::Remote::Subscription.new '/node/values')
       @gom.subscriptions.push s
       @gom.should_receive(:http_put).with(
-        "http://localhost:3000/gom/observer/node/values/.#{s.name}", { 
-        "attributes[callback_url]" => "http://1.2.3.4/gnp?#{s.name}:/node/values", 
-        "attributes[accept]" => 'application/json'
-      })
+        "http://localhost:3000/gom/observer/node/values/.#{s.name}", 
+        hash_including("attributes[callback_url]" => "http://1.2.3.4/gnp?#{s.name}:/node/values") 
+      )
       @gom.refresh_subscriptions
     end
 
     it "should observe an attribute entry" do
       s = (Gom::Remote::Subscription.new '/node:attribute')
       @gom.should_receive(:http_put).with(
-        "http://localhost:3000/gom/observer/node/attribute/.#{s.name}", { 
-        "attributes[callback_url]" => "http://1.2.3.4/gnp?#{s.name}:/node:attribute", 
-        "attributes[accept]" => 'application/json'
-      })
+        "http://localhost:3000/gom/observer/node/attribute/.#{s.name}", 
+        hash_including("attributes[callback_url]" => "http://1.2.3.4/gnp?#{s.name}:/node:attribute") 
+      )
       @gom.refresh s
     end
   end

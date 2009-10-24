@@ -25,7 +25,7 @@ module Gom
         @entry_uri = entry_uri
         @handler = options[:handler] || blk;
         @operations = (@options[:operations] || []).join ', '
-        @uri_regexp = @options[:uri_regexp] && (Regexp.new re) || nil
+        @uri_regexp = (re = @options[:uri_regexp]) && (Regexp.new re) || nil
         @condition_script = @options[:condition_script]
       end
     end

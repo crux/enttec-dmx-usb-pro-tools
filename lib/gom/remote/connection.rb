@@ -42,12 +42,15 @@ module Gom
           "attributes[callback_url]" => callback_url,
           "attributes[accept]"       => 'application/json',
         }
+        if_add params, :operations, subscription
+        if_add params, :uri_regexp, subscription
+        if_add params, :condition_script, subscription
 
-        #  "attributes[operations]"   => (subscription.options['operations'].join ', '),
-        #  "attributes[uri_regexp]"   => subscription.options['uri_regexp'],
-        #  "attributes[condition_script]"=> subscription.options['condition_script'],
-        #}
         http_put(url, params) # {|req| req.content_type = 'application/json'}
+      end
+
+      def if_add params, key, sub
+        (v = sub.send key) and params["attributes[#{key}]"] = v
       end
 
       def callback_ip
