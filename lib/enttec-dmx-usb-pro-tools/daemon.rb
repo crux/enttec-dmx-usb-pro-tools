@@ -22,7 +22,7 @@ module Enttec
         begin
           tic
         rescue Exception => e
-          puts " ## #{e}"
+          puts " ## #{e}\n -> #{e.backtrace.join "\n    "}"
         end
         sleep @options[:refresh_interval_dt]
       end

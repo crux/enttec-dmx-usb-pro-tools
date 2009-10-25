@@ -43,9 +43,8 @@ module Gom
       def refresh subscription
         params = { "attributes[accept]" => 'application/json' }
 
-        base = "http://#{callback_server.host}:#{callback_server.port}"
-        query = "/gnp?#{subscription.name}:#{subscription.entry_uri}"
-        params["attributes[callback_url]"] = "#{base}#{query}"
+        query = "/gnp;#{subscription.name};#{subscription.entry_uri}"
+        params["attributes[callback_url]"] = "#{callback_server_base}#{query}"
         
         [:operations, :uri_regexp, :condition_script].each do |key|
           (v = subscription.send key) and params["attributes[#{key}]"] = v
@@ -56,6 +55,7 @@ module Gom
       end
 
       def callback_server
+        #@callback_server or (raise 'no callback server running!')
         @callback_server ||= start_callback_server
       end
 
@@ -70,10 +70,18 @@ module Gom
 
       private
 
+      def handle_gnp *args
+        puts "--#{args.inspect}--"
+      end
+
+      def callback_server_base
+        @callback_server_base = "http://#{callback_server.host}:#{callback_server.port}"
+      end
+
       def start_callback_server
         unless @callback_server
           o = { :Host => callback_ip, :Port => @options[:callback_port] }
-          @callback_server = (CallbackServer.new o)
+          @callback_server = CallbackServer.new(o) {|*args| handle_gnp *args}
         end
         @callback_server.start
       end
@@ -92,7 +100,6 @@ module Gom
           res.error!
         end
       end
-
     end
   end
 end
