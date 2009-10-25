@@ -4,7 +4,7 @@ module Enttec
     include ::Timeout
 
     Defaults = { 
-      :refresh_interval_dt => 10
+      :refresh_interval_dt => 60
     }
 
     # dmx_node_url: http://<gom server>/<dmx node path>

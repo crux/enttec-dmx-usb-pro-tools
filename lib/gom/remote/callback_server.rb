@@ -6,6 +6,14 @@ module Gom
       Defaults = {
         :Host => "0.0.0.0", :Port => 2719, 
       }
+
+      def host
+        @options[:Host]
+      end
+      def port
+        @options[:Port]
+      end
+
       def initialize options = {}
         @options = (Defaults.merge options)
         @rack_script = Proc.new { |env| (dispatch env) }

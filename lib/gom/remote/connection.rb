@@ -9,6 +9,10 @@ module Gom
 
       attr_reader :base_url, :subscriptions
 
+      Defaults = {
+        :callback_port => 2719
+      }
+
       # take apart the URL into GOM and node path part
       def self.init url
         u = URI.parse url
@@ -19,7 +23,8 @@ module Gom
         [(self.new gom_url), path]
       end
 
-      def initialize base_url
+      def initialize base_url, options = {}
+        @options = (Defaults.merge options)
         @base_url = base_url
         Gom::Remote.connection = self
 
@@ -36,21 +41,22 @@ module Gom
       end
 
       def refresh subscription
-        url = "#{@base_url}#{subscription.uri}"
-        callback_url = "http://#{callback_ip}/gnp?#{subscription.name}:#{subscription.entry_uri}"
-        params = {
-          "attributes[callback_url]" => callback_url,
-          "attributes[accept]"       => 'application/json',
-        }
-        if_add params, :operations, subscription
-        if_add params, :uri_regexp, subscription
-        if_add params, :condition_script, subscription
+        params = { "attributes[accept]" => 'application/json' }
 
+        base = "http://#{callback_server.host}:#{callback_server.port}"
+        query = "/gnp?#{subscription.name}:#{subscription.entry_uri}"
+        params["attributes[callback_url]"] = "#{base}#{query}"
+        
+        [:operations, :uri_regexp, :condition_script].each do |key|
+          (v = subscription.send key) and params["attributes[#{key}]"] = v
+        end
+
+        url = "#{@base_url}#{subscription.uri}"
         http_put(url, params) # {|req| req.content_type = 'application/json'}
       end
 
-      def if_add params, key, sub
-        (v = sub.send key) and params["attributes[#{key}]"] = v
+      def callback_server
+        @callback_server ||= start_callback_server
       end
 
       def callback_ip
@@ -63,6 +69,14 @@ module Gom
       end
 
       private
+
+      def start_callback_server
+        unless @callback_server
+          o = { :Host => callback_ip, :Port => @options[:callback_port] }
+          @callback_server = (CallbackServer.new o)
+        end
+        @callback_server.start
+      end
 
       def http_put(url, params, &request_modifier)
         uri = URI.parse url
