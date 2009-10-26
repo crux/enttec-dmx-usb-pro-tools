@@ -16,10 +16,8 @@ module Enttec
   #             ...
   #              +-- :27
   # 
-  class DmxNode
+  class DmxNode < Gom::Remote::Entry
     
-    include Gom::Remote
-
     Defaults = { }
 
     attr_reader :url, :path, :gom

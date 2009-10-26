@@ -74,6 +74,7 @@ module Gom
       def handle_gnp name, entry_uri, req
         sub = @subscriptions.find { |s| s.name == name }
         json = (JSON.parse req.body.read)
+        debugger if (defined? debugger)
         puts "json: #{json.inspect}"
       end
 
