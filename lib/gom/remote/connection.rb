@@ -8,7 +8,7 @@ module Gom
 
     class Connection
 
-      attr_reader :base_url, :subscriptions
+      attr_reader :base_url
 
       Defaults = {
         :callback_port => 2719
@@ -36,23 +36,26 @@ module Gom
         open("#{@base_url}#{path}").read
       end
 
-      def refresh_subscriptions
+      def refresh
         puts " -- refresh observers(#{@subscriptions.size})"
-        @subscriptions.each { |sub| refresh sub }
+        @subscriptions.each do |sub| 
+          params = { "attributes[accept]" => 'application/json' }
+
+          query = "/gnp;#{sub.name};#{sub.entry_uri}"
+          params["attributes[callback_url]"] = "#{callback_server_base}#{query}"
+
+          [:operations, :uri_regexp, :condition_script].each do |key|
+            (v = sub.send key) and params["attributes[#{key}]"] = v
+          end
+
+          url = "#{@base_url}#{sub.uri}"
+          http_put(url, params) # {|req| req.content_type = 'application/json'}
+        end
       end
 
-      def refresh subscription
-        params = { "attributes[accept]" => 'application/json' }
-
-        query = "/gnp;#{subscription.name};#{subscription.entry_uri}"
-        params["attributes[callback_url]"] = "#{callback_server_base}#{query}"
-        
-        [:operations, :uri_regexp, :condition_script].each do |key|
-          (v = subscription.send key) and params["attributes[#{key}]"] = v
-        end
-
-        url = "#{@base_url}#{subscription.uri}"
-        http_put(url, params) # {|req| req.content_type = 'application/json'}
+      def subscribe sub
+        @subscriptions.delete sub # every sub only once!
+        @subscriptions.push sub
       end
 
       def callback_server

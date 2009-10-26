@@ -16,7 +16,6 @@ describe Enttec::DmxNode do
     before :each do
       @gom, path = (Gom::Remote::Connection.init 'http://dmx:345/dmx/node')
       @gom.should_not == nil
-      @gom.subscriptions == nil
       @dmx = (Enttec::DmxNode.new path)
     end
 

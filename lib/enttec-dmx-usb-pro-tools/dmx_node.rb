@@ -32,7 +32,7 @@ module Enttec
         "#{@path}/values", 
         :name => "enttec-dmx", :operations => [:update, :create]
       )
-      connection.subscriptions.push @values_sub
+      connection.subscribe @values_sub
     end
 
     def device_file

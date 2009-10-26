@@ -17,8 +17,6 @@ module Enttec
 
     def run
       puts " -- running gom enttec daemon loop..."
-      #grcs = Gom::Remote::CallbackServer.new
-      #grcs.start
       loop do
         begin
           tic
@@ -27,15 +25,13 @@ module Enttec
         end
         sleep @options[:refresh_interval_dt]
       end
-    ensure
-      #grcs.stop
     end
 
     private
 
     def tic
       puts " -- tic --"
-      @gom.refresh_subscriptions
+      @gom.refresh
       #values = {}
       #@dmx.values.each_with_index do |val, i|
       #  (0 < val) and (values[i+1] = val)

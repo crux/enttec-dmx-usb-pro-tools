@@ -22,48 +22,48 @@ describe Gom::Remote::Connection do
       @cs.stub!(:port).and_return(2179)
     end
 
-    it "should have no subscriptions on init" do
-      @gom.subscriptions.should == []
-    end
+    #it "should have no subscriptions on init" do
+    #  @gom.subscriptions.should == []
+    #end
 
-    it "should have an operations whitelist" do
+    it "should subscribe operations whitelist" do
       s = (Gom::Remote::Subscription.new '/node', :operations => [:delete, :create])
-      @gom.subscriptions.push s
       @gom.should_receive(:http_put).with(
         "http://localhost:3000/gom/observer/node/.#{s.name}", 
         hash_including("attributes[operations]" => 'delete, create')
       )
-      @gom.refresh_subscriptions
+      @gom.subscribe s
+      @gom.refresh
     end
 
     it "should have an uri regexp" do
       s = (Gom::Remote::Subscription.new '/node', :uri_regexp => /foo/)
-      @gom.subscriptions.push s
       @gom.should_receive(:http_put).with(
         "http://localhost:3000/gom/observer/node/.#{s.name}", 
         hash_including("attributes[uri_regexp]" => /foo/)
       )
-      @gom.refresh_subscriptions
+      @gom.subscribe s
+      @gom.refresh
     end
 
     it "should have accept=application/json param" do
       s = (Gom::Remote::Subscription.new '/node')
-      @gom.subscriptions.push s
       @gom.should_receive(:http_put).with(
         "http://localhost:3000/gom/observer/node/.#{s.name}", 
         hash_including("attributes[accept]" => 'application/json')
       )
-      @gom.refresh_subscriptions
+      @gom.subscribe s
+      @gom.refresh
     end
 
     it "should put observer to gom on refresh" do
       s = (Gom::Remote::Subscription.new '/node/values')
-      @gom.subscriptions.push s
       @gom.should_receive(:http_put).with(
         "http://localhost:3000/gom/observer/node/values/.#{s.name}", 
         hash_including("attributes[callback_url]" => "http://1.2.3.4:2179/gnp;#{s.name};/node/values") 
       )
-      @gom.refresh_subscriptions
+      @gom.subscribe s
+      @gom.refresh
     end
 
     it "should observe an attribute entry" do
@@ -72,7 +72,8 @@ describe Gom::Remote::Connection do
         "http://localhost:3000/gom/observer/node/attribute/.#{s.name}", 
         hash_including("attributes[callback_url]" => "http://1.2.3.4:2179/gnp;#{s.name};/node:attribute") 
       )
-      @gom.refresh s
+      @gom.subscribe s
+      @gom.refresh
     end
   end
 
