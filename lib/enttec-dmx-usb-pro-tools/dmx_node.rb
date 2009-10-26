@@ -20,30 +20,29 @@ module Enttec
     
     Defaults = { }
 
-    attr_reader :url, :path, :gom
+    attr_reader :path
 
     # dmx_node_url: http://<gom server>/<dmx node path>
     #
-    def initialize url, options = {}
-      @url = url
+    def initialize path, options = {}
+      @path = path
       @options = (Defaults.merge options)
-      @gom, @path = (Gom::Remote::Connection.init url)
 
       @values_sub = Subscription.new(
         "#{@path}/values", 
         :name => "enttec-dmx", :operations => [:update, :create]
       )
-      @gom.subscriptions.push @values_sub
+      connection.subscriptions.push @values_sub
     end
 
     def device_file
-      @device_file ||= (@gom.read "#{@path}:device_file.txt")
+      @device_file ||= (connection.read "#{@path}:device_file.txt")
     end
 
     def values
       data = (Array.new 512, 0)
 
-      xml = (@gom.read "#{@path}/values.xml")
+      xml = (connection.read "#{@path}/values.xml")
       (Nokogiri::parse xml).xpath("//attribute").each do |a|
         begin
           chan = Integer(a.attributes['name'].to_s)

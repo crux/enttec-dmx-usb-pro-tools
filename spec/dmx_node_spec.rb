@@ -5,17 +5,19 @@ describe Enttec::DmxNode do
   include Enttec
 
   describe "initialization" do
-    it "should initialize with GOM node URL" do
-      dmx = Enttec::DmxNode.new('http://gom:345/dmx/node')
-      dmx.url.should == 'http://gom:345/dmx/node'
+    it "should initialize with GOM node path" do
+      _, path = (Gom::Remote::Connection.init 'http://dmx:345/dmx/node')
+      dmx = (Enttec::DmxNode.new path)
       dmx.path.should == '/dmx/node'
     end
   end
 
   describe "with a dmx node it" do
     before :each do
-      @dmx = Enttec::DmxNode.new('http://dmx:345/dmx/node')
-      @gom = Gom::Remote.connection
+      @gom, path = (Gom::Remote::Connection.init 'http://dmx:345/dmx/node')
+      @gom.should_not == nil
+      @gom.subscriptions == nil
+      @dmx = (Enttec::DmxNode.new path)
     end
 
     it "should load the device_file name" do

@@ -11,7 +11,8 @@ module Enttec
     #
     def initialize dmx_node_url, options = {}
       @options = (Defaults.merge options)
-      @dmx = DmxNode.new dmx_node_url, @options
+      @gom, dmx_node_path = (Gom::Remote::Connection.init dmx_node_url)
+      @dmx = DmxNode.new dmx_node_path, @options
     end
 
     def run
@@ -34,7 +35,7 @@ module Enttec
 
     def tic
       puts " -- tic --"
-      @dmx.gom.refresh_subscriptions
+      @gom.refresh_subscriptions
       #values = {}
       #@dmx.values.each_with_index do |val, i|
       #  (0 < val) and (values[i+1] = val)
