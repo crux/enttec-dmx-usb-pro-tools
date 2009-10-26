@@ -59,13 +59,13 @@ module Gom
       private
 
       def dispatch env
-        puts("-" * 80)
-        puts env.inspect
-        puts("-" * 80)
+        #puts("-" * 80)
+        #puts env.inspect
+        #puts("-" * 80)
         req = Rack::Request.new(env)
         #params = req.params
 
-        debugger if (defined? debugger)
+        #debugger if (defined? debugger)
         _, name, entry_uri = env['REQUEST_URI'].split(/;/)
         @handler.call(name, entry_uri, req)
         [200, {"Content-Type"=>"text/plain"}, ["keep going dude!"]]

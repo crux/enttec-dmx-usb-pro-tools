@@ -31,7 +31,10 @@ module Enttec
       @options = (Defaults.merge options)
       @gom, @path = (Gom::Remote::Connection.init url)
 
-      @values_sub = (Subscription.new "#{@path}/values", :name => "enttec-dmx")
+      @values_sub = Subscription.new(
+        "#{@path}/values", 
+        :name => "enttec-dmx", :operations => [:update, :create]
+      )
       @gom.subscriptions.push @values_sub
     end
 

@@ -1,4 +1,5 @@
 require 'open-uri'
+require 'json'
 
 module Gom
   module Remote
@@ -70,8 +71,10 @@ module Gom
 
       private
 
-      def handle_gnp *args
-        puts "--#{args.inspect}--"
+      def handle_gnp name, entry_uri, req
+        sub = @subscriptions.find { |s| s.name == name }
+        json = (JSON.parse req.body.read)
+        puts "json: #{json.inspect}"
       end
 
       def callback_server_base
