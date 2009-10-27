@@ -5,9 +5,11 @@ $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'enttec-dmx-usb-pro-tools'
 
 def main args
-  gom_dmx_node_url = args.shift
-  daemon = (Enttec::Daemon.new gom_dmx_node_url)
-  daemon.run
+  dmx_node_url = args.shift
+  daemon = Gom::Remote::Daemon.new(dmx_node_url) do |path|
+    Enttec::DmxNode.new path
+  end
+  daemon.run { |*args| puts "tacker -#{args.inspect}" }
 rescue => e
   puts " ## #{e}\n -> #{e.backtrace.join "\n    "}"
 end

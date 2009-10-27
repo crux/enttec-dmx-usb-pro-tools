@@ -37,8 +37,9 @@ module Gom
       end
 
       def refresh
-        puts " -- refresh observers(#{@subscriptions.size})"
+        puts " -- refresh subscriptions(#{@subscriptions.size}):"
         @subscriptions.each do |sub| 
+          puts "     - #{sub.name}"
           params = { "attributes[accept]" => 'application/json' }
 
           query = "/gnp;#{sub.name};#{sub.entry_uri}"

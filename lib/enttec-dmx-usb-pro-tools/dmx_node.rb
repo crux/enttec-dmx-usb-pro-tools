@@ -32,7 +32,7 @@ module Enttec
         "#{@path}/values", 
         :name => "enttec-dmx", :operations => [:update, :create]
       )
-      @values_sub.callback = lambda { |*args| callback(*args) }
+      @values_sub.callback = lambda { |*args| value_gnp(*args) }
       connection.subscribe @values_sub
     end
 
@@ -58,9 +58,9 @@ module Enttec
       data
     end
 
-    def callback op, attribute
+    def value_gnp op, attribute
       chan, val = attribute["name"], (Integer attribute["value"])
-      puts "#{op}: DMX #{chan} => #{val}"
+      puts " -- DMX Node #{op}: Channel(#{chan}) == #{val}"
     end
 
     def validate_dmx_range chan, value
@@ -70,11 +70,6 @@ module Enttec
       if(value < 0 or 256 <= value) 
         raise " ## warning: DMX value out of range: #{value}"
       end
-    end
-
-    def on_values &callback
-      raise "not yet implemented"
-      @on_values_cb = callback
     end
   end
 end
