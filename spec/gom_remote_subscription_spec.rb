@@ -2,18 +2,6 @@ require File.dirname(__FILE__)+'/spec_helper'
 
 describe Gom::Remote::Subscription do
 
-  describe "with a Remote::Connection" do 
-    before :each do
-      @gom, _ = (Gom::Remote::Connection.init 'http://localhost:3000')
-    end
-  end
-
-  it "should overwrite name from options value" do
-    name = "test-#{Time.now.to_i}"
-    s = (Gom::Remote::Subscription.new '/node/values', :name => name)
-    s.name.should == name
-  end
-
   describe "when created with default options" do
     before :each do
       @sub = (Gom::Remote::Subscription.new '/dmx/node/values')
@@ -30,6 +18,21 @@ describe Gom::Remote::Subscription do
     it "should have a nil uri_regexp" do
       @sub.uri_regexp.should == nil
     end
+    it "should have a nil callback" do
+      @sub.callback.should == nil
+    end
+  end
+
+  it "should overwrite callback from options" do
+    callback  = lambda {}
+    s = (Gom::Remote::Subscription.new '/node/values', :callback => callback )
+    s.callback.should == callback
+  end
+
+  it "should overwrite name from options value" do
+    name = "test-#{Time.now.to_i}"
+    s = (Gom::Remote::Subscription.new '/node/values', :name => name)
+    s.name.should == name
   end
 
   describe "observer uri" do

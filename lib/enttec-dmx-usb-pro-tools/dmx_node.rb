@@ -32,6 +32,7 @@ module Enttec
         "#{@path}/values", 
         :name => "enttec-dmx", :operations => [:update, :create]
       )
+      @values_sub.callback = lambda { |*args| callback(*args) }
       connection.subscribe @values_sub
     end
 
@@ -55,6 +56,11 @@ module Enttec
       end
 
       data
+    end
+
+    def callback op, attribute
+      chan, val = attribute["name"], (Integer attribute["value"])
+      puts "#{op}: DMX #{chan} => #{val}"
     end
 
     def validate_dmx_range chan, value

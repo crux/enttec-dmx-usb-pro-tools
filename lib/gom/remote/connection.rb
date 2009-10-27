@@ -74,11 +74,37 @@ module Gom
 
       private
 
-      def handle_gnp name, entry_uri, req
-        sub = @subscriptions.find { |s| s.name == name }
-        json = (JSON.parse req.body.read)
+      def gnp_callback name, entry_uri, req
+        unless sub = @subscriptions.find { |s| s.name == name }
+          raise "no such subscription: #{name} :: #{entry_uri}"#\n#{@subscriptions.inspect}"
+        end
+        op, payload = (decode_gnp_body req.body.read)
+        begin
+          (sub.callback.call op, payload)
+        rescue => e
+          callstack = "#{e.backtrace.join "\n    "}"
+          puts " ## Subscription#callback: #{e}\n -> #{callstack}"
+        end 
+      end
+
+      def decode_gnp_body txt
         debugger if (defined? debugger)
-        puts "json: #{json.inspect}"
+        json = (JSON.parse txt)
+        puts " -- json GNP: #{json.inspect}"
+
+        payload = nil
+        op = %w{update delete create}.find { |op| json[op] }
+        %w{attribute node}.find { |t| payload = json[op][t] }
+        #puts "payload: #{payload.inspect}"
+        [op, payload]
+
+        #op = (json.include? 'update') ? :udpate : nil
+        #op ||= (json.include? 'delete') ? :delete : nil
+        #op ||= (json.include? 'create') ? :create : nil
+        #op or (raise "unknown GNP op: #{txt}") 
+
+        #payload = json[op.to_s]
+        #[op, (payload['attribute'] || payload['node'])]
       end
 
       def callback_server_base
@@ -88,11 +114,12 @@ module Gom
       def start_callback_server
         unless @callback_server
           o = { :Host => callback_ip, :Port => @options[:callback_port] }
-          @callback_server = CallbackServer.new(o) {|*args| handle_gnp *args}
+          @callback_server = CallbackServer.new(o) {|*args| gnp_callback *args}
         end
         @callback_server.start
       end
 
+      # incapsulates the underlying net access
       def http_put(url, params, &request_modifier)
         uri = URI.parse url
         req = Net::HTTP::Put.new uri.path

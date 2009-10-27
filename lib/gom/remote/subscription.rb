@@ -7,11 +7,16 @@ module Gom
         :operations       => [:update],
         :condition_script => nil, 
         :uri_regexp       => nil,
-        :handler          => nil, 
+        :callback         => nil, 
       }
 
-      attr_reader :entry_uri, :uri
+      attr_reader :entry_uri, :uri, :callback
+      attr_accessor :callback
       attr_reader :name, :operations, :condition_script, :uri_regexp
+
+      def to_s
+        "#{self.class}: #{@options.inject}"
+      end
 
       # hint: supplying a recognizable name helps with distributed gom
       # operations 
@@ -23,7 +28,7 @@ module Gom
 
         @options = Defaults.merge options
         @entry_uri = entry_uri
-        @handler = options[:handler] || blk;
+        @callback = options[:callback] || blk;
         @operations = (@options[:operations] || []).join ', '
         @uri_regexp = (re = @options[:uri_regexp]) && (Regexp.new re) || nil
         @condition_script = @options[:condition_script]
