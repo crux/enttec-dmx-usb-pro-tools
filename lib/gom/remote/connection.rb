@@ -33,7 +33,10 @@ module Gom
       end
 
       def read path
-        open("#{@base_url}#{path}").read
+        url = "#{@base_url}#{path}"
+        open(url).read
+      rescue Timeout::Error => e
+        raise "connection timeout: #{url}"
       end
 
       def refresh
@@ -84,7 +87,7 @@ module Gom
           (sub.callback.call op, payload)
         rescue => e
           callstack = "#{e.backtrace.join "\n    "}"
-          puts " ## Subscription#callback: #{e}\n -> #{callstack}"
+          puts " ## Subscription::callback - #{e}\n -> #{callstack}"
         end 
       end
 

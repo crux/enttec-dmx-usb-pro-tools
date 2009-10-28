@@ -12,6 +12,7 @@ module Rdmx
     }
 
     def initialize port
+      puts " -- open enttec dmx usb pro: #{port}"
       self.device_name = port
       self.port = SerialPort.new device_name, DEFAULT_PARAMS
     end

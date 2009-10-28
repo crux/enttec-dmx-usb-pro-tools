@@ -23,7 +23,7 @@ module Gom
           begin
             puts " -- tic --"
             @gom.refresh
-            tic.call unless tic.nil?
+            tic && (tic.call self)
           rescue Exception => e
             puts " ## #{e}\n -> #{e.backtrace.join "\n    "}"
           end

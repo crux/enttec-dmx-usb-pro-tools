@@ -40,6 +40,10 @@ module Enttec
       @device_file ||= (connection.read "#{@path}:device_file.txt")
     end
 
+    def device 
+      @device ||= (Rdmx::Dmx.new device_file)
+    end
+
     def values
       data = (Array.new 512, 0)
 
@@ -58,9 +62,16 @@ module Enttec
       data
     end
 
+    private
+
     def value_gnp op, attribute
       chan, val = attribute["name"], (Integer attribute["value"])
       puts " -- DMX Node #{op}: Channel(#{chan}) == #{val}"
+
+      debugger if (defined? debugger)
+      v = device.values
+      v[chan] = val
+      device.write *values
     end
 
     def validate_dmx_range chan, value

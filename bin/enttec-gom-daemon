@@ -9,7 +9,8 @@ def main args
   daemon = Gom::Remote::Daemon.new(dmx_node_url) do |path|
     Enttec::DmxNode.new path
   end
-  daemon.run { |*args| puts "tacker -#{args.inspect}" }
+  daemon.run # { |*args| puts " .. tacker -#{args.inspect}" }
+
 rescue => e
   puts " ## #{e}\n -> #{e.backtrace.join "\n    "}"
 end

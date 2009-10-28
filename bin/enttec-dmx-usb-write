@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'enttec-dmx-usb-pro-tools'
 
 def main args
   puts "args: #{args.inspect}"
-  #Enttec::Session.new .main ARGV
 
   device_file = args.shift
   device = Rdmx::Dmx.new device_file
