@@ -68,9 +68,9 @@ module Gom
       end
 
       def callback_ip
-        return @callback_ip unless @callback_ip.nil?
+        debugger if (defined? debugger)
         txt = (read "/gom/config/connection.txt")
-        unless m = (txt.match /^client_ip:\s*(\d+\.\d+\.\d+\.\d)/) 
+        unless m = (txt.match /^client_ip:\s*(\d+\.\d+\.\d+\.\d+)/) 
           raise "/gom/config/connection: No Client IP? '#{txt}'"
         end
         @callback_ip = m[1]
