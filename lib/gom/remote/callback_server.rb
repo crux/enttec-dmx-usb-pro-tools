@@ -35,8 +35,9 @@ module Gom
               puts "    mongrel up: #{server}"
               @server = server
             end
-          rescue => e
+          rescue Exception => e
             puts " ## oops: #{e}"
+            puts @options.inspect
           end
         end
         self
