@@ -1,3 +1,4 @@
+require 'timeout'
 module Gom
   module Remote
     class Daemon

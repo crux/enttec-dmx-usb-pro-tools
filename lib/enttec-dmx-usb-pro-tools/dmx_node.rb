@@ -48,6 +48,7 @@ module Enttec
       data = (Array.new 512, 0)
 
       xml = (connection.read "#{@path}/values.xml")
+      puts "xml: #{xml}"
       (Nokogiri::parse xml).xpath("//attribute").each do |a|
         begin
           chan = Integer(a.attributes['name'].to_s)
@@ -78,7 +79,7 @@ module Enttec
     end
 
     def validate_dmx_range chan, value
-      if(chan < 1 or 512 <= chan)
+      if(chan < 1 or 512 < chan)
         raise "warning: DMX channel out of range: #{chan}"
       end
       if(value < 0 or 256 <= value) 
