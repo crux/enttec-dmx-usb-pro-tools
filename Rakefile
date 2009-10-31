@@ -15,7 +15,7 @@ begin
     }.gsub /\n\n/, ''
     gem.email = "dirk.luesebrink@gmail.com"
     gem.homepage = "http://github.com/crux/enttec-dmx-usb-pro-tools"
-    gem.authors = ["dirk luesebrink"]
+    gem.authors = ["art+com/dirk luesebrink"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 rescue LoadError
