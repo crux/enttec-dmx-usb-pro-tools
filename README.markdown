@@ -12,6 +12,23 @@ use the jewler tasks:
 
     $ rake gemspec build install
 
+## Dependencies 
+
+For the debian system i did the last install the following packages and gems
+had to installed:
+
+    $ apt-get install git-core
+    $ apt-get install irb
+    $ apt-get install telnet
+    $ gem install irb
+    $ gem install mongrel
+    $ gem install nokogiri
+    $ gem install open-uri
+    $ gem install rack
+    $ gem install ruby-debug
+    $ gem install ruby-prof
+    $ gem install ruby-serialport
+
 ## credits
 
 The USB com code got lifted from [Ian Smith-Heisters' Rdmx package][2] which
