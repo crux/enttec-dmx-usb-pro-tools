@@ -65,13 +65,13 @@ module Enttec
     private
 
     def value_gnp op, attribute
-      chan, val = attribute["name"], (Integer attribute["value"])
+      chan, val = (Integer attribute["name"]), (Integer attribute["value"])
       puts " -- DMX Node #{op}: Channel(#{chan}) == #{val}"
 
       debugger if (defined? debugger)
-      v = device.values
+      v = values # device.values
       v[chan] = val
-      device.write *values
+      device.write *v
     end
 
     def validate_dmx_range chan, value

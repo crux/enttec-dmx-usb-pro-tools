@@ -1,4 +1,4 @@
-require File.dirname(__FILE__)+'/spec_helper'
+require File.dirname(__FILE__)+'/../spec_helper'
 
 describe Enttec::DmxNode do
 
@@ -9,6 +9,26 @@ describe Enttec::DmxNode do
       _, path = (Gom::Remote::Connection.init 'http://dmx:345/dmx/node')
       dmx = (Enttec::DmxNode.new path)
       dmx.path.should == '/dmx/node'
+    end
+  end
+
+  describe "with a values GNP message" do
+    before :each do
+      @gom, path = (Gom::Remote::Connection.init 'http://dmx:345/dmx/node')
+      @gom.should_not == nil
+      @dmx = (Enttec::DmxNode.new path)
+
+      @values = (Array.new 512, 0)
+      @dmx.stub!(:values).and_return(@values)
+      @device = Object.new
+      @dmx.stub!(:device).and_return(@device)
+    end
+
+    it "should write values GNP to device" do
+      values = (Array.new 512, 0)
+      values[1] = 255
+      @device.should_receive(:write).with(*values)
+      (@dmx.send :value_gnp, :update, {"name" => "1", "value" => "255"})
     end
   end
 
