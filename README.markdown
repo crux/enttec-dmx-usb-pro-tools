@@ -6,6 +6,12 @@ collection of tools to control the device from the command line. It also
 includes unix server script to hook up your dmx pro with a [GOM][1] (_not yet
 released_) server model.
 
+## Install
+    
+use the jewler tasks:
+
+    $ rake gemspec build install
+
 ## credits
 
 The USB com code got lifted from [Ian Smith-Heisters' Rdmx package][2] which

@@ -9,8 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["dirk luesebrink"]
-  s.date = %q{2009-10-22}
-  s.default_executable = %q{enttec-dmx-usb-pro}
+  s.date = %q{2009-10-31}
   s.description = %q{ 
       The ENTTEC DMX USB PRO is a cost efficient device to control DMX from the
       convinience of your USB port. The __enttec-dmx-usb-pro-tools__ gem is a
@@ -19,7 +18,7 @@ Gem::Specification.new do |s|
       yet released_) server model.
     }
   s.email = %q{dirk.luesebrink@gmail.com}
-  s.executables = ["enttec-dmx-usb-pro"]
+  s.executables = ["enttec-dmx-usb-write", "enttec-gom-daemon"]
   s.extra_rdoc_files = [
     "LICENSE",
      "README.markdown"
@@ -31,13 +30,24 @@ Gem::Specification.new do |s|
      "README.markdown",
      "Rakefile",
      "VERSION",
-     "bin/enttec-dmx-usb-pro",
+     "bin/enttec-dmx-usb-write",
+     "bin/enttec-gom-daemon",
      "doc/DMXUSBPro.pdf",
      "enttec-dmx-usb-pro-tools.gemspec",
      "lib/enttec-dmx-usb-pro-tools.rb",
+     "lib/enttec-dmx-usb-pro-tools/dmx_node.rb",
      "lib/enttec-dmx-usb-pro-tools/rdmx.rb",
-     "lib/enttec-dmx-usb-pro-tools/server.rb",
+     "lib/gom/remote.rb",
+     "lib/gom/remote/callback_server.rb",
+     "lib/gom/remote/connection.rb",
+     "lib/gom/remote/daemon.rb",
+     "lib/gom/remote/entry.rb",
+     "lib/gom/remote/subscription.rb",
+     "spec/dmx_node_spec.rb",
      "spec/dmx_spec.rb",
+     "spec/gom_remote_callback_server_spec.rb",
+     "spec/gom_remote_connection_spec.rb",
+     "spec/gom_remote_subscription_spec.rb",
      "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://github.com/crux/enttec-dmx-usb-pro-tools}
@@ -46,7 +56,11 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.4}
   s.summary = %q{shell & server tools for the ENTTEC DMX USB PRO device}
   s.test_files = [
-    "spec/dmx_spec.rb",
+    "spec/dmx_node_spec.rb",
+     "spec/dmx_spec.rb",
+     "spec/gom_remote_callback_server_spec.rb",
+     "spec/gom_remote_connection_spec.rb",
+     "spec/gom_remote_subscription_spec.rb",
      "spec/spec_helper.rb"
   ]
 
