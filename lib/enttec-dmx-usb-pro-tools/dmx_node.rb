@@ -67,19 +67,22 @@ module Enttec
     def value_gnp op, attribute
       chan, val = (Integer attribute["name"]), (Integer attribute["value"])
       puts " -- DMX Node #{op}: Channel(#{chan}) == #{val}"
+      validate_dmx_range chan, val
 
       debugger if (defined? debugger)
       v = values # device.values
-      v[chan] = val
+      v[chan-1] = val
       device.write *v
+    rescue => e
+      puts " ## value gnp error: #{e}"
     end
 
     def validate_dmx_range chan, value
       if(chan < 1 or 512 <= chan)
-        raise " ## warning: DMX channel out of range: #{chan}"
+        raise "warning: DMX channel out of range: #{chan}"
       end
       if(value < 0 or 256 <= value) 
-        raise " ## warning: DMX value out of range: #{value}"
+        raise "warning: DMX value out of range: #{value}"
       end
     end
   end
