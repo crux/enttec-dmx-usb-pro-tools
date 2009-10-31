@@ -26,7 +26,7 @@ describe Enttec::DmxNode do
 
     it "should write values GNP to device" do
       values = (Array.new 512, 0)
-      values[1] = 255
+      values[0] = 255
       @device.should_receive(:write).with(*values)
       (@dmx.send :value_gnp, :update, {"name" => "1", "value" => "255"})
     end
