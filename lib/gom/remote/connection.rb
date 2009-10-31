@@ -37,6 +37,9 @@ module Gom
         open(url).read
       rescue Timeout::Error => e
         raise "connection timeout: #{url}"
+      rescue => e
+        puts " ## read error: #{url} -- #{e}"
+        throw e
       end
 
       def refresh
