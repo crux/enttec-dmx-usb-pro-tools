@@ -1,5 +1,6 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+#$LOAD_PATH.unshift File.join(File.dirname(__FILE__), %w{.. .. gom-remote lib})
 require 'enttec-dmx-usb-pro-tools'
 require 'spec'
 require 'spec/autorun'
