@@ -15,5 +15,5 @@ rescue => e
   puts " ## #{e}\n -> #{e.backtrace.join "\n    "}"
 end
 
-(__FILE__ == $0) and (main ARGV)
+main ARGV
 # vim: syntax=ruby

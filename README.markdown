@@ -12,6 +12,15 @@ use the jewler tasks:
 
     $ rake gemspec build install
 
+## Starting the GOM daemon
+
+In its first incarnation the daeaming gets start like this: 
+
+    $ enttec-gom-daemon http://gom.bonn.t-gallery/services/enttec-dmx-usb-pro
+
+The URL argument points to a GOM node from where the daemon will pull its
+configuration.
+
 ## Dependencies 
 
 For the debian system i did the last install the following packages and gems
