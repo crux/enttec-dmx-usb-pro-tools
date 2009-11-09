@@ -4,6 +4,10 @@ require 'rubygems'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'enttec-dmx-usb-pro-tools'
 
+#Thread.abort_on_exception = true
+$stderr.sync = true
+$stdout.sync = true
+
 def main args
   dmx_node_url = args.shift
   daemon = Gom::Remote::Daemon.new(dmx_node_url) do |path|
