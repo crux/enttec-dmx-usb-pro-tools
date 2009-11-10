@@ -8,8 +8,17 @@ require 'enttec-dmx-usb-pro-tools'
 $stderr.sync = true
 $stdout.sync = true
 
+def redirect_to logfile
+  puts " -- redirecting stdout/stderr to: #{logfile}"
+  f = File.open(logfile, File::WRONLY|File::APPEND|File::CREAT)
+  f.sync = true
+  $stderr = $stdout = f
+end
+
 def main args
   dmx_node_url = args.shift
+  (logfile = args.shift) and (redirect_to logfile)
+  puts " -- starting enttec daemon: #{Time.now}"
   daemon = Gom::Remote::Daemon.new(dmx_node_url) do |path|
     Enttec::DmxNode.new path
   end
