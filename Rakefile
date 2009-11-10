@@ -13,7 +13,7 @@ begin
       includes unix server script to hook up your dmx pro with a [GOM][1] (_not
       yet released_) server model.
     }.gsub /\n\n/, ''
-    gem.email = "dirk.luesebrink@gmail.com"
+    gem.email = "dirk.luesebrink+enttec@gmail.com"
     gem.homepage = "http://github.com/crux/enttec-dmx-usb-pro-tools"
     gem.authors = ["art+com/dirk luesebrink"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
