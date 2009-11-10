@@ -1,0 +1,100 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          enttec-gom-daemon
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# X-Start-Before:    kdm gdm xdm
+# X-Stop-After:      kdm gdm xdm
+# Default-Start:     2 3 4 5
+# Default-Stop:      1
+# Short-Description: Start the Enttec DMX-USB-Pro daemon
+# Description:       GOMs gateway to DMX
+### END INIT INFO
+
+set -e
+
+NAME=
+DESC="enttec-gom-daemon"
+#DAEMON=/home/dirk/enttec-dmx-usb-pro-daemon/etc/start-enttec-daemon
+DAEMON=$(which enttec-gom-daemon)
+DAEMON_USER="dirk"
+
+ENTTEC_NODE=http://gom.bonn.t-gallery/services/enttec-dmx-usb-pro
+LOGFILE=/var/log/enttec-gom-daemon.log
+PARAMS="${ENTTEC_NODE} ${LOGFILE}"
+
+PIDDIR=/var/run/enttec-gom-daemon
+PIDFILE=$PIDDIR/pid
+#VERBOSITY="--quiet"
+VERBOSITY="--verbose"
+
+test -x $DAEMON || exit 0
+
+# Get lsb functions
+. /lib/lsb/init-functions
+. /etc/default/rcS
+
+start_it_up()
+{
+  if [ ! -d $PIDDIR ]; then
+    mkdir -p $PIDDIR
+    chown $DAEMON_USER $PIDDIR
+    chgrp $DAEMON_USER $PIDDIR
+  fi
+
+  touch LOGFILE
+  chown $DAEMON_USER $LOGFILE
+
+  if [ -e $PIDFILE ]; then
+    PIDDIR=/proc/$(cat $PIDFILE)
+    if [ -d ${PIDDIR} -a  "$(readlink -f ${PIDDIR}/exe)" = "${DAEMON}" ]; then 
+      log_success_msg "$DESC already started; not starting."
+      return
+    else
+      log_success_msg "Removing stale PID file $PIDFILE."
+      rm -f $PIDFILE
+    fi
+  fi
+
+  log_daemon_msg "Starting $DESC" "$NAME"
+  /sbin/start-stop-daemon --start --background --quiet \
+    --make-pidfile --pidfile $PIDFILE \
+    -c dirk --exec $DAEMON -- $PARAMS
+
+    #--chuid $DAEMON_USER --exec $DAEMON -- $PARAMS
+  log_end_msg $?
+}
+
+
+shut_it_down()
+{
+  log_daemon_msg "Stopping $DESC" "$NAME"
+  /sbin/start-stop-daemon $VERBOSITY --stop --retry 5 --oknodo \
+    --pidfile $PIDFILE --user $DAEMON_USER
+  # We no longer include these arguments so that start-stop-daemon
+  # can do its job even given that we may have been upgraded.
+  # We rely on the pidfile being sanely managed
+  # --exec $DAEMON -- --system $PARAMS
+  log_end_msg $?
+  rm -f $PIDFILE
+}
+
+case "$1" in
+  start)
+    start_it_up
+    ;;
+  stop)
+    shut_it_down
+    ;;
+  restart)
+    shut_it_down
+    start_it_up
+  ;;
+  status)
+    status_of_proc -p $PIDFILE $DAEMON $NAME && exit 0 || exit $?
+    ;;
+  *)
+    log_success_msg "Usage: /etc/init.d/${NAME} {start|stop|restart|status}"
+    exit 2
+esac
+
