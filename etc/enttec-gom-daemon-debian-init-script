@@ -13,20 +13,18 @@
 
 set -e
 
-NAME=
+NAME="enttec gom daemon"
 DESC="enttec-gom-daemon"
-#DAEMON=/home/dirk/enttec-dmx-usb-pro-daemon/etc/start-enttec-daemon
 DAEMON=$(which enttec-gom-daemon)
-DAEMON_USER="dirk"
+DAEMON_USER="webs"
+VERBOSITY="--verbose"
 
 ENTTEC_NODE=http://gom.bonn.t-gallery/services/enttec-dmx-usb-pro
 LOGFILE=/var/log/enttec-gom-daemon.log
-PARAMS="${ENTTEC_NODE} ${LOGFILE}"
 
 PIDDIR=/var/run/enttec-gom-daemon
 PIDFILE=$PIDDIR/pid
-#VERBOSITY="--quiet"
-VERBOSITY="--verbose"
+PARAMS="${ENTTEC_NODE} ${LOGFILE}"
 
 test -x $DAEMON || exit 0
 
@@ -39,10 +37,10 @@ start_it_up()
   if [ ! -d $PIDDIR ]; then
     mkdir -p $PIDDIR
     chown $DAEMON_USER $PIDDIR
-    chgrp $DAEMON_USER $PIDDIR
+    #chgrp $DAEMON_USER $PIDDIR
   fi
 
-  touch LOGFILE
+  touch $LOGFILE
   chown $DAEMON_USER $LOGFILE
 
   if [ -e $PIDFILE ]; then
@@ -57,11 +55,10 @@ start_it_up()
   fi
 
   log_daemon_msg "Starting $DESC" "$NAME"
-  /sbin/start-stop-daemon --start --background --quiet \
+  /sbin/start-stop-daemon --start --background $VERBOSITY \
     --make-pidfile --pidfile $PIDFILE \
-    -c dirk --exec $DAEMON -- $PARAMS
+    -c $DAEMON_USER --exec $DAEMON -- $PARAMS
 
-    #--chuid $DAEMON_USER --exec $DAEMON -- $PARAMS
   log_end_msg $?
 }
 
@@ -74,7 +71,6 @@ shut_it_down()
   # We no longer include these arguments so that start-stop-daemon
   # can do its job even given that we may have been upgraded.
   # We rely on the pidfile being sanely managed
-  # --exec $DAEMON -- --system $PARAMS
   log_end_msg $?
   rm -f $PIDFILE
 }
