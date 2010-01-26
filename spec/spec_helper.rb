@@ -41,7 +41,6 @@ Spec::Runner.configure do |config|
       :get, "http://gom:345/gom/config/connection.txt", 
       :body => "client_ip: 10.0.0.23"
     )
-    $c = (Gom::Remote::Connection.new "http://gom:345/dmx/node")
   end
 
   config.after :each do
