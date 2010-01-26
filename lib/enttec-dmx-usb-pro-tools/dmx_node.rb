@@ -1,5 +1,3 @@
-require 'nokogiri'
-
 module Enttec
 
   # needs:
@@ -70,7 +68,7 @@ module Enttec
       puts " -- DMX Node #{op}: Channel(#{chan}) == #{val}"
       validate_dmx_range chan, val
 
-      debugger if (defined? debugger)
+      #debugger if (defined? debugger)
       v = values # device.values
       v[chan-1] = val
       device.write *v

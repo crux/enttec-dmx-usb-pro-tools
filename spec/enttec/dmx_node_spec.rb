@@ -6,7 +6,7 @@ describe Enttec::DmxNode do
 
   describe "initialization" do
     it "should initialize with GOM node path" do
-      _, path = (Gom::Remote::Connection.init 'http://dmx:345/dmx/node')
+      _, path = (Gom::Remote::Connection.init 'http://gom:345/dmx/node')
       dmx = (Enttec::DmxNode.new path)
       dmx.path.should == '/dmx/node'
     end
@@ -14,7 +14,7 @@ describe Enttec::DmxNode do
 
   describe "with a values GNP message" do
     before :each do
-      @gom, path = (Gom::Remote::Connection.init 'http://dmx:345/dmx/node')
+      @gom, path = (Gom::Remote::Connection.init 'http://gom:345/dmx/node')
       @gom.should_not == nil
       @dmx = (Enttec::DmxNode.new path)
 
@@ -34,7 +34,7 @@ describe Enttec::DmxNode do
 
   describe "with a dmx node it" do
     before :each do
-      @gom, path = (Gom::Remote::Connection.init 'http://dmx:345/dmx/node')
+      @gom, path = (Gom::Remote::Connection.init 'http://gom:345/dmx/node')
       @gom.should_not == nil
       @dmx = (Enttec::DmxNode.new path)
     end
