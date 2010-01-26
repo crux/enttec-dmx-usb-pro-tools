@@ -10,13 +10,17 @@ begin
       The ENTTEC DMX USB PRO is a cost efficient device to control DMX from the
       convinience of your USB port. The __enttec-dmx-usb-pro-tools__ gem is a
       collection of tools to control the device from the command line. It also
-      includes unix server script to hook up your dmx pro with a [GOM][1] (_not
+      includes unix server script to hook up your dmx pro to a [GOM][1] (_not
       yet released_) server model.
     }.gsub /\n\n/, ''
     gem.email = "dirk.luesebrink+enttec@gmail.com"
     gem.homepage = "http://github.com/crux/enttec-dmx-usb-pro-tools"
     gem.authors = ["art+com/dirk luesebrink"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
+
+    gem.add_development_dependency "rspec"
+    gem.add_runtime_dependency "gom-script applix"
+    gem.add_runtime_dependency "gom-script", ">=0.1.4"
   end
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
