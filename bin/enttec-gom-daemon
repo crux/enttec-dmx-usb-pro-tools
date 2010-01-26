@@ -17,8 +17,8 @@ def main argv
   args = (options.delete :args)
   service_url = args.shift
   Gom::Remote::Daemon.new(service_url, options) do |daemon, path|
-    service = Enttec::DmxNode.new path
-    puts "-->#{daemon.inspect}<--"
+    service = Enttec::DmxNode.new path, options
+    daemon.redirect_log service.logfile
     daemon.actor_loop { |daemon| puts " -- gom refresh: #{Time.now}" }
   end
 

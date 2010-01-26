@@ -22,9 +22,11 @@ VERBOSITY="--verbose"
 ENTTEC_NODE=http://gom.bonn.t-gallery/services/enttec-dmx-usb-pro
 LOGFILE=/var/log/enttec-gom-daemon.log
 
+# -- end of configure --
+
 PIDDIR=/var/run/enttec-gom-daemon
 PIDFILE=$PIDDIR/pid
-PARAMS="${ENTTEC_NODE} ${LOGFILE}"
+PARAMS="--logfile=${LOGFILE} ${ENTTEC_NODE}"
 
 test -x $DAEMON || exit 0
 

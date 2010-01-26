@@ -20,7 +20,7 @@ begin
 
     gem.add_development_dependency "rspec"
     gem.add_runtime_dependency "applix"
-    gem.add_runtime_dependency "gom-script", ">=0.1.4"
+    gem.add_runtime_dependency "gom-script", ">=0.1.5"
   end
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"

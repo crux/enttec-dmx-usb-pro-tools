@@ -16,9 +16,14 @@ module Enttec
   # 
   class DmxNode < Gom::Remote::Entry
     
-    Defaults = { }
+    Defaults = {
+      :logfile => '-'
+    }
 
     attr_reader :path
+
+    include OAttr
+    oattr :logfile
 
     # dmx_node_url: http://<gom server>/<dmx node path>
     #
