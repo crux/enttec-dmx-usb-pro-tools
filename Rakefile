@@ -19,7 +19,7 @@ begin
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
 
     gem.add_development_dependency "rspec"
-    gem.add_runtime_dependency "gom-script applix"
+    gem.add_runtime_dependency "applix"
     gem.add_runtime_dependency "gom-script", ">=0.1.4"
   end
 rescue LoadError

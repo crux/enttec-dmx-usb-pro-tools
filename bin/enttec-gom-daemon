@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
+require 'applix'
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 require 'enttec-dmx-usb-pro-tools'
 
@@ -8,21 +9,18 @@ require 'enttec-dmx-usb-pro-tools'
 $stderr.sync = true
 $stdout.sync = true
 
-def redirect_to logfile
-  puts " -- redirecting stdout/stderr to: #{logfile}"
-  f = File.open(logfile, File::WRONLY|File::APPEND|File::CREAT)
-  f.sync = true
-  $stderr = $stdout = f
-end
+def main argv
+  options = Hash.from_argv argv
+  #options[:callback_port] ||= 2351
 
-def main args
-  dmx_node_url = args.shift
-  (logfile = args.shift) and (redirect_to logfile)
-  puts " -- starting enttec daemon: #{Time.now}"
-  daemon = Gom::Remote::Daemon.new(dmx_node_url) do |path|
-    Enttec::DmxNode.new path
+  puts " -- starting #{File.basename __FILE__} at #{Time.now}"
+  args = (options.delete :args)
+  service_url = args.shift
+  Gom::Remote::Daemon.new(service_url, options) do |daemon, path|
+    service = Enttec::DmxNode.new path
+    puts "-->#{daemon.inspect}<--"
+    daemon.actor_loop { |daemon| puts " -- gom refresh: #{Time.now}" }
   end
-  daemon.run # { |*args| puts " .. tacker -#{args.inspect}" }
 
 rescue => e
   puts " ## #{e}\n -> #{e.backtrace.join "\n    "}"
