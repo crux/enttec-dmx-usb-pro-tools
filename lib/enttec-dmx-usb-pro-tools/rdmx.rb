@@ -1,4 +1,6 @@
-# (this file) copied from: http://github.com/heisters/rdmx/blob/master/lib/dmx.rb
+# (this file) copied from: 
+#   http://github.com/heisters/rdmx/blob/master/lib/dmx.rb
+#
 require 'serialport'
 
 module Rdmx
