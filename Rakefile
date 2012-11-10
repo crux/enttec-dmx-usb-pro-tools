@@ -1,3 +1,8 @@
+require 'bundler'
+Bundler::GemHelper.install_tasks
+
+__END__
+
 require 'rubygems'
 require 'rake'
 

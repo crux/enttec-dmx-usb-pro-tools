@@ -1,8 +1,10 @@
-*.sw?
+# Ignore all logfiles and tempfiles.
+/log/*
+/tmp
+
+## PROJECT::SPECIFIC
+Gemfile.lock
+
+## generic files to ignore
+
 .DS_Store
-coverage
-rdoc
-tmp
-pkg
-log/*
-*.gemspec

@@ -1,35 +1,15 @@
-# figure out where we are being loaded from
-if $LOADED_FEATURES.grep(/spec\/spec_helper\.rb/).any?
-  begin
-    raise "foo"
-  rescue => e
-    puts <<-MSG
-  ===================================================
-  It looks like spec_helper.rb has been loaded
-  multiple times. Normalize the require to:
+$:.unshift(File.dirname(__FILE__))
+$:.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
-    require "spec/spec_helper"
-
-  Things like File.join and File.expand_path will
-  cause it to be loaded multiple times.
-
-  Loaded this time from:
-
-    #{e.backtrace.join("\n    ")}
-  ===================================================
-    MSG
-  end
-end
-
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-require 'rubygems'
-require 'spec'
-require 'spec/autorun'
-require 'fakeweb'
 require 'enttec-dmx-usb-pro-tools'
+require 'fakeweb'
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
+  config.add_setting(
+    :fixtures, :default => "#{File.dirname(__FILE__)}/fixtures",
+    :alias_with => :fixtures
+  )
+
   config.before :each do
     @port = stub('SerialPort', :write => nil)
     SerialPort.stub!(:new).and_return(@port)
