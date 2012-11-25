@@ -15,16 +15,12 @@ describe Rdmx::Dmx do
       Rdmx::Dmx.packetize(1).should == ["\x7E","\x06", "\x02", "\x00", "\x00", "\x01", "\xE7"]
     end
 
-    it "should work with byte arguments" do
-      lambda do
-        Rdmx::Dmx.packetize("\x00")
-      end.should_not raise_error
+    it "works with byte arguments" do
+      expect { Rdmx::Dmx.packetize("\x00") }.to_not raise_error
     end
 
-    it "should work with integer arguments" do
-      lambda do
-        Rdmx::Dmx.packetize(0)
-      end.should_not raise_error
+    it "works with integer arguments" do
+      expect { Rdmx::Dmx.packetize(0) }.to_not raise_error
     end
   end
 

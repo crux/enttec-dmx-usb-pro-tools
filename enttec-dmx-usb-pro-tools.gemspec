@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'applix', '>=0.4.4'
   s.add_dependency 'gom-script'
 
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec', '~> 2.12.0'
   s.add_development_dependency 'rspec-mocks'
   s.add_development_dependency 'guard'
   s.add_development_dependency 'guard-rspec'
