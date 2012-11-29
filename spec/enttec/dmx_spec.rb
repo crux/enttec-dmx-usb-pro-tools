@@ -10,7 +10,7 @@ describe Rdmx::Dmx do
     end
   end
 
-  describe "packet construction" do
+  describe "packetizing" do
     it "should pad correctly" do
       Rdmx::Dmx.packetize(1).should == ["\x7E","\x06", "\x02", "\x00", "\x00", "\x01", "\xE7"]
     end
@@ -22,30 +22,26 @@ describe Rdmx::Dmx do
     it "works with integer arguments" do
       expect { Rdmx::Dmx.packetize(0) }.to_not raise_error
     end
-  end
 
-  describe "packet deconstruction" do
     it "should remove padding" do
       Rdmx::Dmx.depacketize(Rdmx::Dmx.packetize(1).join).should == [1]
     end
   end
 
   describe "with a dmx port" do
-    before :each do
-      @dmx = Rdmx::Dmx.new '/tmp/test'
-    end
+    let(:dmx) { Rdmx::Dmx.new '/tmp/test' }
 
     describe "writing" do
       it "should convert to a packet and write to the port" do
         @port.should_receive(:write).with("\x7E\x06\x03\x00\x00\x01\x02\xE7")
-        @dmx.write(1, 2)
+        dmx.write(1, 2)
       end
     end
 
     describe "reading" do
       it "should read from the port and convert from a DMX packet" do
         @port.should_receive(:read).and_return("\x7E\x06\x03\x00\x00\x01\x02\xE7")
-        @dmx.read.should == [1, 2]
+        dmx.read.should == [1, 2]
       end
     end
   end
