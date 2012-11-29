@@ -23,9 +23,9 @@ module Rdmx
       @port.write self.class.packetize(*data.flatten).join
     end
 
-    def read
-      self.class.depacketize @port.read
-    end
+    #def read
+    #  self.class.depacketize @port.read
+    #end
 
     SOM   = "\x7E" # start of message
     LABEL = "\x06" # output only send dmx label
@@ -38,7 +38,7 @@ module Rdmx
         packet = []
         packet << SOM
         packet << LABEL
-        packet << (size & 255).chr
+        packet << ((size >> 0) & 255).chr
         packet << ((size >> 8) & 255).chr
         packet << START
         packet += data.map{|d|d.respond_to?(:chr) ? d.chr : d}
