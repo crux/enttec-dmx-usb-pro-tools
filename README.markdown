@@ -1,4 +1,4 @@
-# ENTTEX DMX USB PRO Tools
+# ENTTEC DMX USB PRO Tools
 
 The ENTTEC DMX USB PRO is a cost efficient device to control DMX from the
 convinience of your USB port. The __enttec-dmx-usb-pro-tools__ gem is a
