@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'serialport'
   s.add_dependency 'nokogiri'
   s.add_dependency 'applix', '>=0.4.4'
-  s.add_dependency 'gom-script'
+  s.add_dependency 'gom-script', '>=0.2.3'
 
   s.add_development_dependency 'rspec', '~> 2.12.0'
   s.add_development_dependency 'rspec-mocks'
